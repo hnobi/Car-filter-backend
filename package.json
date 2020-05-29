@@ -1,0 +1,21 @@
+{
+  "name": "car-filter-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:hnobi/Car-filter-backend.git",
+  "author": "hammed noibi <hnobi08@yahoo.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "node server/app"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "csvtojson": "^2.0.10",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.4",
+    "pg": "^8.2.1",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^5.21.10"
+  }
+  
+}
