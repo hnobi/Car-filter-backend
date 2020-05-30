@@ -10,7 +10,9 @@
     "npm": "6.9.0"
   },
   "scripts": {
-    "start": "export NODE_ENV=production && node server/app.js"
+    "start": "export NODE_ENV=production && node server/app.js",
+    "seed:db": "export NODE_ENV=production && npm run migrate && sequelize db:seed:all",
+    "migrate" :"sequelize db:migrate"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
