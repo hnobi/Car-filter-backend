@@ -1,6 +1,8 @@
 const express = require("express");
 const db = require('./models');
-const { CarOwners } = db;
+const { CarOwners, Sequelize } = db;
+const { Op } = Sequelize;
+
 
 require("dotenv").config();
 
@@ -10,15 +12,36 @@ app.get("/", (req, res) => {
   return res.status(200).json({ message: "Welcome" });
 });
 
-console.log(process.env.NODE_ENV);
 app.get('/cars_owners', (req, res)=>{
-  CarOwners.findAll().then(cars=>{
-    res.status(200);
-    res.send({
-      message: cars
-    })
+  const { id, color, country, startDate, endDate, limit } = req.query;
+    let filters = '';
 
-  }).catch(e => {res.send({ error: e.message });})
+    if(color){
+       filters = { car_color: color };
+    }
+    
+    if (country) {
+      filters = { country };
+    }
+   
+    if (startDate && endDate){
+    filters =  {
+        car_model_year: {
+          [Op.between]: [parseInt(startDate) , parseInt(endDate)],
+        }
+      }
+    }
+      console.log(filters);
+      CarOwners.findAll({where: filters, limit})
+          .then((cars) => {
+        res.status(200);
+        res.send({
+          message: cars,
+        });
+      })
+      .catch((e) => {
+        res.send({ error: e.message });
+      });
   
 })
 
