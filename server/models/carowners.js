@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       car_color: DataTypes.STRING,
       gender: DataTypes.STRING,
       job_title: DataTypes.STRING,
-      bio: DataTypes.STRING,
+      bio: DataTypes.TEXT,
     },
     {}
   );
