@@ -13,7 +13,7 @@ app.get("/", (req, res) => {
 });
 
 app.get('/cars_owners', (req, res)=>{
-  const { id, color, country, startDate, endDate, limit } = req.query;
+  const { id, color, country, startDate, endDate, limit,gender } = req.query;
     let filters = '';
 
     if(color){
@@ -23,6 +23,9 @@ app.get('/cars_owners', (req, res)=>{
     if (country) {
       filters = { country };
     }
+   if (country) {
+     filters = { gender };
+   }
    
     if (startDate && endDate){
     filters =  {
