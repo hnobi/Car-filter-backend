@@ -6,7 +6,7 @@
   "author": "hammed noibi <hnobi08@yahoo.com>",
   "license": "MIT",
   "scripts": {
-    "start": "node server/app"
+    "start": "node server/app.js"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
