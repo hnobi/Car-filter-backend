@@ -1,6 +1,7 @@
 const express = require("express");
-const db = require('./models');
-var cors = require("cors");
+const cors = require("cors");
+const db = require("./models");
+const filterList = require('./filterlist');
 
 const { CarOwners, Sequelize } = db;
 const { Op } = Sequelize;
@@ -15,39 +16,31 @@ app.get("/", (req, res) => {
   return res.status(200).json({ message: "Welcome" });
 });
 
-app.get('/cars_owners', (req, res)=>{
-  const { id, color, country, startDate, endDate, limit,gender } = req.query;
-    let filters = '';
+app.get('/cars_owners/:id', (req, res)=>{
+  const filterId = req.params.id;
+  const filterData = filterList.filter(filterObj => filterObj.id === parseInt(filterId) );
+  const { start_year, end_year, gender, countries, colors} = filterData[0];
+  const capitalizedGender = gender.charAt(0).toUpperCase() + gender.slice(1);
 
-    if(color){
-       filters = { car_color: color };
-    }
-    
-    if (country) {
-      filters = { country };
-    }
-   if (gender) {
-     filters = { gender };
-   }
-   
-    if (startDate && endDate){
-    filters =  {
-        car_model_year: {
-          [Op.between]: [parseInt(startDate) , parseInt(endDate)],
-        }
-      }
-    }
-      console.log(filters);
-      CarOwners.findAll({where: filters, limit})
-          .then((cars) => {
-        res.status(200);
-        res.send({
-          message: cars,
-        });
+     return CarOwners.findAll({
+        where: {
+          car_color: { [Op.in]: colors },
+          country: { [Op.in]: countries },
+          gender: capitalizedGender,
+          car_model_year: {
+            [Op.between]: [start_year, end_year],
+          },
+        },
       })
-      .catch((e) => {
-        res.send({ error: e.message });
-      });
+        .then((cars) => {
+          res.status(200);
+          res.send({
+            message: cars,
+          });
+        })
+        .catch((e) => {
+          res.send({ error: e.message });
+        });
   
 })
 
